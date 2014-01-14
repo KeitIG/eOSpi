@@ -1,7 +1,12 @@
 #!/bin/bash
 
-# EOS POST-INSTALL #
-####################
+# EOS POST-INSTALL 0.4 #
+########################
+
+# TESTS #
+#########
+#
+# exit 1
 
 # DEBUG MODE #
 ##############
@@ -9,29 +14,24 @@
 
 # TODO LIST #
 #############
+# - Interface Graphique (Qt, GTK ?)
+# - Réecriture Complète du Code
 # - Gestion des logs
 # - Gestion des erreurs
 # - Supports de plus de programmes génériques
-# - GUI (Python/Qt ?)
-# - Support Github
-
-# WISHLIST #
-############
-# - JAVA + IceTea Plugin
-# - TLP
-# - Alternative Browsers
 
 # VARIABLES #
 #############
 
 # Script
-SCRIPT_COM=${0##*/} # Nom du script
+SCRIPT_COM=$0 # Nom du script
 SCRIPT_DATE=`date +"%Y%m%d%H%M%S"`
 SCRIPT_HUMAN_DATE=`date +"%d/%m/%Y - %H:%M:%S"`
 SCRIPT_LOG_FOLDER="/data/tmp/log"
 SCRIPT_LOG_FILE="${LOG_FOLDER}/${SCRIPT_COM}-${SCRIPT_DATE}.log"
-TYPEMACHINE=""
+typeMachine=""
 INSTALLKERNEL="0" # Par défaut on n'installe pas de kernel
+FINALINSTALL=""
 
 # FONCTIONS #
 #############
@@ -44,44 +44,47 @@ pause(){
 # DEBUT DU SCRIPT #
 ###################
 
-
-chmod 755 eOSpi.sh
-
-
 # Le script doit-être lancé en tant que root
 clear
-if [ $EUID -ne 0  ]; then
-        echo -e "\r\e[0;31m$SCRIPT_COM doit-être lancé en tant que root !!! \e[0m"
-                echo -e "\r\e[0;31mLancer le script tel que : sudo $SCRIPT_COM \e[0m"
-        exit 1
+if [ $EUID -ne 0 ]; then
+	echo -e "\r\e[0;31m$SCRIPT_COM doit-être lancé en tant que root !!! \e[0m"
+	echo -e "\r\e[0;31mLancer le script tel que : sudo $SCRIPT_COM \e[0m"
+	exit 1
 fi
+
+# Fixing Permissions
+chmod 755 $SCRIPT_COM
 
 # Récupération du type d'architecture du PC (32 bits ou 64 bits)
 if [ `getconf LONG_BIT` = "64" ]  > /dev/null 2>&1; then
-    TYPEMACHINE="64"
+    typeMachine="64"
 else
-    TYPEMACHINE="32"
+    typeMachine="32"
 fi
-
 
 # Intro
 clear
-echo "---------- Script de post-installation Elementary-OS 0.3 Luna ----------"
+echo -e "\r\e[0;31m------------------------------------------------------\e[0m"
+echo -e "\r\e[0;31mATTENTION \e[0m"
+echo -e "\r\e[0;31mL'installation de elementary-tweaks est temporairement désactivée suite des problèmes non solvables de dépendances\e[0m"
+echo -e "\r\e[0;31m------------------------------------------------------\e[0m"
+echo ""
+echo "---------- Script de post-installation Elementary-OS 0.4 Luna ----------"
 echo ""
 echo "Ce script exéctutera les tâches suivantes:"
 echo ""
 echo "        1- Mise à jour du système"
 echo "        2- Installation de certaines ressources via le dépot d'Elementary Update"
 echo "                - elementary-tweaks"
-echo "                - thèmes         (optionel)"
-echo "                - thèmes Plank   (optionel)"
-echo "                - packs d'icônes (optionel)"
-echo "                - fond d'écrans  (optionel)"
-echo "        3- Installation de navigateurs alternatifs"
-echo "        4- Installation d'une version de Kernel plus récente (optionel et non recommandé)"
-echo "        5- Installation de Bumblebee (optionel)"
-echo "        6- Installation de Java (optionel)"
-echo "        7- Installation de TLP (optionel)"
+echo "                - thèmes         (optionnel)"
+echo "                - thèmes Plank   (optionnel)"
+echo "                - packs d'icônes (optionnel)"
+echo "                - fond d'écrans  (optionnel)"
+echo "        3- Installation de navigateurs alternatifs (optionnel)"
+echo "        4- Installation d'une version de Kernel plus récente (optionnel et non recommandé)"
+echo "        5- Installation de Bumblebee (optionnel)"
+echo "        6- Installation de Java (optionnel)"
+echo "        7- Installation de TLP (optionnel)"
 echo "        8- Nettoyage du système"
 echo "        9- Reboot"
 echo ""
@@ -90,9 +93,8 @@ pause
 
 clear
 echo "Pour les questions suivantes, répondez par 'o' pour oui,"
-echo "ou par n'importe quelleautre lettre pour non"
+echo "ou par n'importe quelle autre lettre pour non"
 pause
-
 
 echo "----- Etape 1) Mises à jour du système ------"
 echo "Automatique"
@@ -168,7 +170,6 @@ echo ""
 echo "----- Etape 9) Redémarrage ------------------"
 echo "Automatique"
 echo ""
-
 pause
 
 clear
@@ -176,70 +177,113 @@ echo "Le script va se lancer, vous deviez avoir le temps de vous faire un café 
 pause
 
 
-# Etape 1
+#########################################################################################
+# Mise en forme de FINALINSTALL
+cd /tmp
+
+FINALINSTALL="sudo apt-get install"
+
+echo "Mise à jour..."
+sudo add-apt-repository ppa:versable/elementary-update -y  > /dev/null 2>&1
+sudo apt-get update > /dev/null 2>&1
+#FINALINSTALL+=" elementary-tweaks"
+
+
+# Ressources Tierces
+
+if [ "$installThemes" = "o" ]; then
+    FINALINSTALL+=" elementary-blue-theme elementary-champagne-theme elementary-colors-theme elementary-dark-theme elementary-harvey-theme elementary-lion-theme elementary-matteblack-theme elementary-milk-theme elementary-plastico-theme"
+fi
+
+if [ "$installPlankThemes" = "o" ]; then
+    FINALINSTALL+=" elementary-plank-themes"
+fi
+
+if [ "$installIconsPack" = "o" ]; then
+    FINALINSTALL+=" elementary-elfaenza-icons elementary-emod-icons elementary-enumix-utouch-icons elementary-nitrux-icons elementary-taprevival-icons elementary-thirdparty-icons"
+fi
+
+if [ "$installWallpapersPack" = "o" ]; then
+    FINALINSTALL+=" elementary-wallpaper-collection"
+fi
+
+
+# Navigateurs Alternatifs
+
+if [ "$installFirefox" = "o" ]; then
+    FINALINSTALL+=" firefox"
+fi
+if [ "$installChromium" = "o" ]; then
+    FINALINSTALL+=" chromium-browser"
+fi
+
+
+# Kernels Alternatifs
+
+if [ "$installKernel" = "1" ]; then
+    FINALINSTALL+=" linux-generic-lts-raring"
+fi
+if [ "$installKernel" = "2" ]; then
+    FINALINSTALL+=" linux-generic-lts-saucy"
+fi
+
+
+# Bumblebee
+
+if [ "$installBumblebee" = "o" ]; then
+    sudo add-apt-repository ppa:bumblebee/stable -y  
+    FINALINSTALL+=" bumblebee virtualgl"
+fi
+
+
+# Java
+
+if [ "$installJava" = "o" ]; then
+    FINALINSTALL+=" openjdk-7-jre icedtea-7-plugin"
+fi
+
+
+# TLP
+if [ "$installTLP" = "o" ]; then
+    sudo add-apt-repository ppa:linrunner/tlp -y
+    FINALINSTALL+=" tlp tlp-rdw"
+fi
+
+
+#########################################################################################
+
+
+
+#########################################################################################
+# Exécution de FINALINSTALL
+
 sudo apt-get update > /dev/null 2>&1
 sudo apt-get upgrade -y
 sudo apt-get dist-upgrade -y
 
-# Etape 2
-echo "Installation des PPA"
-echo " - ppa:versable/elementary-update"
-sudo add-apt-repository ppa:versable/elementary-update -y  > /dev/null 2>&1
-sudo apt-get update > /dev/null 2>&1
-sudo apt-get install elementary-tweaks -y
+FINALINSTALL+=" -y"
+eval "$FINALINSTALL"
+
+#########################################################################################
 
 
-if [ "$installThemes" = "o" ]; then
-        sudo apt-get install elementary-blue-theme elementary-champagne-theme elementary-colors-theme elementary-dark-theme elementary-harvey-theme elementary-lion-theme elementary-matteblack-theme elementary-milk-theme elementary-plastico-theme -y
-fi
 
-if [ "$installPlankThemes" = "o" ]; then
-        sudo apt-get install elementary-plank-themes -y
-fi
-
-if [ "$installIconsPack" = "o" ]; then
-        sudo apt-get install elementary-elfaenza-icons elementary-emod-icons elementary-enumix-utouch-icons elementary-nitrux-icons elementary-taprevival-icons elementary-thirdparty-icons -y
-fi
-
-if [ "$installWallpapersPack" = "o" ]; then
-        sudo apt-get install elementary-wallpaper-collection -y
-fi
-
-
-# Etape 3
-cd /tmp
-
-if [ "$installFirefox" = "o" ]; then
-        sudo apt-get install firefox -y
-fi
+#########################################################################################
+# External Ressources 
+clear
+echo "$installChrome $typeMachine"
+pause
 if [ "$installChrome" = "o" ]; then
     if [ "$typeMachine" = "32" ]; then
         wget https://dl.google.com/linux/direct/google-chrome-stable_current_i386.deb
         sudo dpkg -i google-chrome-stable_current_i386.deb
         sudo apt-get -f install
-    elif [ "$typeMachine" = "64" ]; then
+    fi
+    if [ "$typeMachine" = "64" ]; then
         wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
         sudo dpkg -i google-chrome-stable_current_amd64.deb
         sudo apt-get -f install
     fi
-fi
-if [ "$installChromium" = "o" ]; then
-        sudo chromium-browser
-fi
-
-# Etape 4
-
-#echo "        1- Kernel raring"
-#echo "        2- Kernel saucy"
-#echo "        3- Kernel 3.12.7"
-#echo "        0- Ne rien faire"
-
-if [ "$installKernel" = "1" ]; then
-        sudo apt-get install linux-generic-lts-raring
-fi
-
-if [ "$installKernel" = "2" ]; then
-        sudo apt-get install linux-generic-lts-saucy
 fi
 
 if [ "$installKernel" = "3" ]; then
@@ -249,7 +293,8 @@ if [ "$installKernel" = "3" ]; then
         wget kernel.ubuntu.com/~kernel-ppa/mainline/v3.12.7-trusty/linux-image-3.12.7-031207-generic_3.12.7-031207.201401091657_i386.deb
         sudo dpkg -i linux-image-3.12.7*.deb linux-headers-3.12.7*.deb
         sudo update-grub
-    elif [ "$typeMachine" = "64" ]; then
+    fi
+    if [ "$typeMachine" = "64" ]; then
         wget kernel.ubuntu.com/~kernel-ppa/mainline/v3.12.7-trusty/linux-headers-3.12.7-031207_3.12.7-031207.201401091657_all.deb
         wget kernel.ubuntu.com/~kernel-ppa/mainline/v3.12.7-trusty/linux-headers-3.12.7-031207-generic_3.12.7-031207.201401091657_amd64.deb
         wget kernel.ubuntu.com/~kernel-ppa/mainline/v3.12.7-trusty/linux-image-3.12.7-031207-generic_3.12.7-031207.201401091657_amd64.deb
@@ -258,33 +303,27 @@ if [ "$installKernel" = "3" ]; then
     fi
 fi
 
-# Etape 5
-if [ "$installBumblebee" = "o" ]; then
-    sudo add-apt-repository ppa:bumblebee/stable -y
-    sudo apt-get update > /dev/null 2>&1
-    sudo apt-get install bumblebee virtualgl -y
-fi
+#########################################################################################
 
-# Etape 6
-if [ "$installJava" = "o" ]; then
-    sudo apt-get install icedtea-7-plugin openjdk-7-jre -y
-fi
 
-# Etape 7
-if [ "$installTLP" = "o" ]; then
-    sudo add-apt-repository ppa:linrunner/tlp -y
-    sudo apt-get update > /dev/null 2>&1
-    sudo apt-get install tlp tlp-rdw -y
-fi
 
-# Etape 8
+#########################################################################################
+# Nettoyage
 
 sudo apt-get autoclean > /dev/null 2>&1
 sudo apt-get clean > /dev/null 2>&1
 sudo apt-get autoremove -y  > /dev/null 2>&1
 sudo dpkg -P `dpkg -l | grep "^rc" | tr -s ' ' | cut -d ' ' -f 2`  > /dev/null 2>&1
 
-# Etape 9
+#########################################################################################
+
+
+
+#########################################################################################
+# Finalisation
+
+clear
+
 cat << EOT
   _                                    _   __ 
  |_ |  _  ._ _   _  ._ _|_  _. ._     / \ (_  
