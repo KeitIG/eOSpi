@@ -156,7 +156,7 @@ read installJava
 
 echo "----- Etape 7) TLP --------------------------"
 echo "TLP est un programme permettant d'optimiser la batterie SUR LES ORDINATEURS PORTABLES UNIQUEMENT"
-echo "Notez que l'économie peut varier selon le modèle de votre ordinateur
+echo "Notez que l'économie peut varier selon le modèle de votre ordinateur"
 echo ""
 echo "Voulez vous installer TLP ?"
 read installTLP
