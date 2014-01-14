@@ -1,26 +1,7 @@
 #!/bin/bash
 
-#########################################
-#                                
-#   Script PostInstall elementaryOS         
-#                                                            
-#   Version 0.1 : 09 novembre 2013            
-#   - version initiale                                
-#
-#   Version 0.2 : 13 novembre 2013            
-#   - mise à jour par Thomas Bourcey         
-#   - correction de scripting                    
-#                                                            
-#   Version 0.3 : 13 janvier 2014            
-#   - mise à jour par Pierre van Mart         
-#   - ajout de fonctionnalités                    
-#                                                             
-#   By KeitIG <keitig.dev@gmail.com>    
-#                                       
-#   Remerciements:                      
-#     -Thomas Bourcey                   
-#                                                            
-#########################################
+# EOS POST-INSTALL #
+####################
 
 # DEBUG MODE #
 ##############
@@ -35,7 +16,7 @@
 # - Support Github
 
 # WISHLIST #
-#############
+############
 # - JAVA + IceTea Plugin
 # - TLP
 # - Alternative Browsers
@@ -62,6 +43,7 @@ pause(){
 
 # DEBUT DU SCRIPT #
 ###################
+
 
 chmod 755 eOSpi.sh
 
@@ -240,6 +222,7 @@ if [ "$installChrome" = "o" ]; then
         sudo dpkg -i google-chrome-stable_current_amd64.deb
         sudo apt-get -f install
     fi
+fi
 if [ "$installChromium" = "o" ]; then
         sudo chromium-browser
 fi
