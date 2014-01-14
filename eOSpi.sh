@@ -77,7 +77,7 @@ echo "                - thèmes         (optionel)"
 echo "                - thèmes Plank   (optionel)"
 echo "                - packs d'icônes (optionel)"
 echo "                - fond d'écrans  (optionel)"
-echo "        3- Installation de navigateurs alternatifs
+echo "        3- Installation de navigateurs alternatifs"
 echo "        4- Installation d'une version de Kernel plus récente (optionel et non recommandé)"
 echo "        5- Installation de Bumblebee (optionel)"
 echo "        6- Installation de Java (optionel)"
@@ -136,7 +136,7 @@ read installKernel
 
 echo "----- Etape 5) Bumblebee --------------------"
 echo "Bumblebee permet de désactiver la carte graphique nVidia lorsqu'elle n'a pas besoin d'être utilisée."
-echo "En savoir plus su la technologie Optimus: http://doc.ubuntu-fr.org/nvidia_optimus"
+echo "En savoir plus sur la technologie Optimus: http://doc.ubuntu-fr.org/nvidia_optimus"
 echo ""
 echo "IMPORTANT - Si vous avez un PC fixe, ou si vous n'avez pas de carte graphique nVidia, veuillez sautez cette étape"
 echo "          - Si vous ne savez pas:"
