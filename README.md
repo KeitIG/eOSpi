@@ -8,4 +8,4 @@ To run this script:
 ```bash
 sudo bash nameofthescript.sh
 ```
-It is important to use bash and not sh !
+It is important to use bash command and not sh !
