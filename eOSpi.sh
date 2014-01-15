@@ -3,11 +3,6 @@
 # EOS POST-INSTALL 0.4 #
 ########################
 
-# TESTS #
-#########
-#
-# exit 1
-
 # DEBUG MODE #
 ##############
 # set -x
@@ -15,7 +10,6 @@
 # TODO LIST #
 #############
 # - Interface Graphique (Qt, GTK ?)
-# - Réecriture Complète du Code
 # - Gestion des logs
 # - Gestion des erreurs
 # - Supports de plus de programmes génériques
@@ -69,7 +63,7 @@ echo -e "\r\e[0;31mATTENTION \e[0m"
 echo -e "\r\e[0;31mL'installation de elementary-tweaks est temporairement désactivée suite des problèmes non solvables de dépendances\e[0m"
 echo -e "\r\e[0;31m------------------------------------------------------\e[0m"
 echo ""
-echo "---------- Script de post-installation Elementary-OS 0.4 Luna ----------"
+echo "-------------------- eOSpi 0.4 --------------------"
 echo ""
 echo "Ce script exéctutera les tâches suivantes:"
 echo ""
@@ -169,7 +163,6 @@ echo ""
 
 echo "----- Etape 9) Redémarrage ------------------"
 echo "Automatique"
-echo ""
 pause
 
 clear
@@ -334,7 +327,7 @@ cat << EOT
 EOT
 echo ""
 echo "Script terminé, le système va redémarrer, votre pingouin est maintenant complètement fonctionnel :)"
-echo "N'hésitez pas à m'écrire un merci sur le forum d'elementaryos-fr si ce script vous a été utile :)"
+echo "N'hésitez pas à écrire un merci sur le forum d'elementaryos-fr si ce script vous a été utile !"
 echo "http://www.elementaryos-fr.org/forum/topic-214-script-eospostinstall-installation-rapide-apres-installation-d-eos-page-1.html"
 echo ""
 pause
