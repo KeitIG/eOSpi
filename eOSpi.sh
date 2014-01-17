@@ -58,11 +58,6 @@ fi
 
 # Intro
 clear
-echo -e "\r\e[0;31m------------------------------------------------------\e[0m"
-echo -e "\r\e[0;31mATTENTION \e[0m"
-echo -e "\r\e[0;31mL'installation de elementary-tweaks est temporairement désactivée suite des problèmes non solvables de dépendances\e[0m"
-echo -e "\r\e[0;31m------------------------------------------------------\e[0m"
-echo ""
 echo "-------------------- eOSpi 0.4 --------------------"
 echo ""
 echo "Ce script exéctutera les tâches suivantes:"
@@ -179,7 +174,7 @@ FINALINSTALL="sudo apt-get install"
 echo "Mise à jour..."
 sudo add-apt-repository ppa:versable/elementary-update -y  > /dev/null 2>&1
 sudo apt-get update > /dev/null 2>&1
-#FINALINSTALL+=" elementary-tweaks"
+FINALINSTALL+=" elementary-tweaks"
 
 
 # Ressources Tierces
